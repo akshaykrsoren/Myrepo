@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="testdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblcountry">
+          <Key>
+            <PropertyRef Name="countryid" />
+          </Key>
+          <Property Name="countryid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="countryname" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="tblEmployee">
+          <Key>
+            <PropertyRef Name="Eid" />
+          </Key>
+          <Property Name="Eid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="bigint" />
+          <Property Name="CountryId" Type="int" />
+          <Property Name="Salary" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="RoleTypeId" Type="int" />
+        </EntityType>
+        <EntityType Name="tblItem">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemName" Type="nvarchar" MaxLength="200" />
+          <Property Name="ItemPrice" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="CatagoryId" Type="int" />
+          <Property Name="ItemDesc" Type="nvarchar(max)" />
+          <Property Name="ItemImage" Type="bit" />
+          <Property Name="InsertedDateTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblRoleMaster">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="tblStock">
+          <Key>
+            <PropertyRef Name="StockId" />
+          </Key>
+          <Property Name="StockId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemId" Type="int" />
+          <Property Name="StockQty" Type="int" Nullable="false" />
+          <Property Name="InsertedDateTime" Type="datetime" />
+          <Property Name="UpdatedDateTime" Type="datetime" />
+          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <Association Name="FK_Employee_tblcountry">
+          <End Role="tblcountry" Type="Self.tblcountry" Multiplicity="0..1" />
+          <End Role="tblEmployee" Type="Self.tblEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblcountry">
+              <PropertyRef Name="countryid" />
+            </Principal>
+            <Dependent Role="tblEmployee">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_tblRoleMaster1">
+          <End Role="tblRoleMaster" Type="Self.tblRoleMaster" Multiplicity="0..1" />
+          <End Role="tblEmployee" Type="Self.tblEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRoleMaster">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="tblEmployee">
+              <PropertyRef Name="RoleTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblStock_tblProduct">
+          <End Role="tblItem" Type="Self.tblItem" Multiplicity="0..1" />
+          <End Role="tblStock" Type="Self.tblStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblItem">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="tblStock">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="testdbModelStoreContainer">
+          <EntitySet Name="tblcountry" EntityType="Self.tblcountry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblEmployee" EntityType="Self.tblEmployee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblItem" EntityType="Self.tblItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRoleMaster" EntityType="Self.tblRoleMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblStock" EntityType="Self.tblStock" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Employee_tblcountry" Association="Self.FK_Employee_tblcountry">
+            <End Role="tblcountry" EntitySet="tblcountry" />
+            <End Role="tblEmployee" EntitySet="tblEmployee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_tblRoleMaster1" Association="Self.FK_Employee_tblRoleMaster1">
+            <End Role="tblRoleMaster" EntitySet="tblRoleMaster" />
+            <End Role="tblEmployee" EntitySet="tblEmployee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblStock_tblProduct" Association="Self.FK_tblStock_tblProduct">
+            <End Role="tblItem" EntitySet="tblItem" />
+            <End Role="tblStock" EntitySet="tblStock" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="testdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="testdbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblcountries" EntityType="testdbModel.tblcountry" />
+          <EntitySet Name="tblEmployees" EntityType="testdbModel.tblEmployee" />
+          <EntitySet Name="tblItems" EntityType="testdbModel.tblItem" />
+          <EntitySet Name="tblRoleMasters" EntityType="testdbModel.tblRoleMaster" />
+          <EntitySet Name="tblStocks" EntityType="testdbModel.tblStock" />
+          <AssociationSet Name="FK_Employee_tblcountry" Association="testdbModel.FK_Employee_tblcountry">
+            <End Role="tblcountry" EntitySet="tblcountries" />
+            <End Role="tblEmployee" EntitySet="tblEmployees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_tblRoleMaster1" Association="testdbModel.FK_Employee_tblRoleMaster1">
+            <End Role="tblRoleMaster" EntitySet="tblRoleMasters" />
+            <End Role="tblEmployee" EntitySet="tblEmployees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblStock_tblProduct" Association="testdbModel.FK_tblStock_tblProduct">
+            <End Role="tblItem" EntitySet="tblItems" />
+            <End Role="tblStock" EntitySet="tblStocks" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="tblcountry">
+          <Key>
+            <PropertyRef Name="countryid" />
+          </Key>
+          <Property Name="countryid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="countryname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblEmployees" Relationship="testdbModel.FK_Employee_tblcountry" FromRole="tblcountry" ToRole="tblEmployee" />
+        </EntityType>
+        <EntityType Name="tblEmployee">
+          <Key>
+            <PropertyRef Name="Eid" />
+          </Key>
+          <Property Name="Eid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="Int64" />
+          <Property Name="CountryId" Type="Int32" />
+          <Property Name="Salary" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="RoleTypeId" Type="Int32" />
+          <NavigationProperty Name="tblcountry" Relationship="testdbModel.FK_Employee_tblcountry" FromRole="tblEmployee" ToRole="tblcountry" />
+          <NavigationProperty Name="tblRoleMaster" Relationship="testdbModel.FK_Employee_tblRoleMaster1" FromRole="tblEmployee" ToRole="tblRoleMaster" />
+        </EntityType>
+        <EntityType Name="tblItem">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ItemPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CatagoryId" Type="Int32" />
+          <Property Name="ItemDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ItemImage" Type="Boolean" />
+          <Property Name="InsertedDateTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblStocks" Relationship="testdbModel.FK_tblStock_tblProduct" FromRole="tblItem" ToRole="tblStock" />
+        </EntityType>
+        <EntityType Name="tblRoleMaster">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblEmployees" Relationship="testdbModel.FK_Employee_tblRoleMaster1" FromRole="tblRoleMaster" ToRole="tblEmployee" />
+        </EntityType>
+        <EntityType Name="tblStock">
+          <Key>
+            <PropertyRef Name="StockId" />
+          </Key>
+          <Property Name="StockId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemId" Type="Int32" />
+          <Property Name="StockQty" Type="Int32" Nullable="false" />
+          <Property Name="InsertedDateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDateTime" Type="DateTime" Precision="3" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="tblItem" Relationship="testdbModel.FK_tblStock_tblProduct" FromRole="tblStock" ToRole="tblItem" />
+        </EntityType>
+        <Association Name="FK_Employee_tblcountry">
+          <End Type="testdbModel.tblcountry" Role="tblcountry" Multiplicity="0..1" />
+          <End Type="testdbModel.tblEmployee" Role="tblEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblcountry">
+              <PropertyRef Name="countryid" />
+            </Principal>
+            <Dependent Role="tblEmployee">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_tblRoleMaster1">
+          <End Type="testdbModel.tblRoleMaster" Role="tblRoleMaster" Multiplicity="0..1" />
+          <End Type="testdbModel.tblEmployee" Role="tblEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRoleMaster">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="tblEmployee">
+              <PropertyRef Name="RoleTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblStock_tblProduct">
+          <End Type="testdbModel.tblItem" Role="tblItem" Multiplicity="0..1" />
+          <End Type="testdbModel.tblStock" Role="tblStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblItem">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="tblStock">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="testdbModelStoreContainer" CdmEntityContainer="testdbEntities">
+          <EntitySetMapping Name="tblcountries">
+            <EntityTypeMapping TypeName="testdbModel.tblcountry">
+              <MappingFragment StoreEntitySet="tblcountry">
+                <ScalarProperty Name="countryname" ColumnName="countryname" />
+                <ScalarProperty Name="countryid" ColumnName="countryid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblEmployees">
+            <EntityTypeMapping TypeName="testdbModel.tblEmployee">
+              <MappingFragment StoreEntitySet="tblEmployee">
+                <ScalarProperty Name="RoleTypeId" ColumnName="RoleTypeId" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Eid" ColumnName="Eid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblItems">
+            <EntityTypeMapping TypeName="testdbModel.tblItem">
+              <MappingFragment StoreEntitySet="tblItem">
+                <ScalarProperty Name="InsertedDateTime" ColumnName="InsertedDateTime" />
+                <ScalarProperty Name="ItemImage" ColumnName="ItemImage" />
+                <ScalarProperty Name="ItemDesc" ColumnName="ItemDesc" />
+                <ScalarProperty Name="CatagoryId" ColumnName="CatagoryId" />
+                <ScalarProperty Name="ItemPrice" ColumnName="ItemPrice" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRoleMasters">
+            <EntityTypeMapping TypeName="testdbModel.tblRoleMaster">
+              <MappingFragment StoreEntitySet="tblRoleMaster">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStocks">
+            <EntityTypeMapping TypeName="testdbModel.tblStock">
+              <MappingFragment StoreEntitySet="tblStock">
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="UpdatedDateTime" ColumnName="UpdatedDateTime" />
+                <ScalarProperty Name="InsertedDateTime" ColumnName="InsertedDateTime" />
+                <ScalarProperty Name="StockQty" ColumnName="StockQty" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="StockId" ColumnName="StockId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

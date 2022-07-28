@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="testdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="testdbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tblcountries" EntityType="testdbModel.tblcountry" />
+    <EntitySet Name="tblEmployees" EntityType="testdbModel.tblEmployee" />
+    <EntitySet Name="tblItems" EntityType="testdbModel.tblItem" />
+    <EntitySet Name="tblRoleMasters" EntityType="testdbModel.tblRoleMaster" />
+    <EntitySet Name="tblStocks" EntityType="testdbModel.tblStock" />
+    <AssociationSet Name="FK_Employee_tblcountry" Association="testdbModel.FK_Employee_tblcountry">
+      <End Role="tblcountry" EntitySet="tblcountries" />
+      <End Role="tblEmployee" EntitySet="tblEmployees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_tblRoleMaster1" Association="testdbModel.FK_Employee_tblRoleMaster1">
+      <End Role="tblRoleMaster" EntitySet="tblRoleMasters" />
+      <End Role="tblEmployee" EntitySet="tblEmployees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblStock_tblProduct" Association="testdbModel.FK_tblStock_tblProduct">
+      <End Role="tblItem" EntitySet="tblItems" />
+      <End Role="tblStock" EntitySet="tblStocks" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="tblcountry">
+    <Key>
+      <PropertyRef Name="countryid" />
+    </Key>
+    <Property Name="countryid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="countryname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblEmployees" Relationship="testdbModel.FK_Employee_tblcountry" FromRole="tblcountry" ToRole="tblEmployee" />
+  </EntityType>
+  <EntityType Name="tblEmployee">
+    <Key>
+      <PropertyRef Name="Eid" />
+    </Key>
+    <Property Name="Eid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="Int64" />
+    <Property Name="CountryId" Type="Int32" />
+    <Property Name="Salary" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="RoleTypeId" Type="Int32" />
+    <NavigationProperty Name="tblcountry" Relationship="testdbModel.FK_Employee_tblcountry" FromRole="tblEmployee" ToRole="tblcountry" />
+    <NavigationProperty Name="tblRoleMaster" Relationship="testdbModel.FK_Employee_tblRoleMaster1" FromRole="tblEmployee" ToRole="tblRoleMaster" />
+  </EntityType>
+  <EntityType Name="tblItem">
+    <Key>
+      <PropertyRef Name="ItemId" />
+    </Key>
+    <Property Name="ItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ItemName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ItemPrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="CatagoryId" Type="Int32" />
+    <Property Name="ItemDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ItemImage" Type="Boolean" />
+    <Property Name="InsertedDateTime" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="tblStocks" Relationship="testdbModel.FK_tblStock_tblProduct" FromRole="tblItem" ToRole="tblStock" />
+  </EntityType>
+  <EntityType Name="tblRoleMaster">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblEmployees" Relationship="testdbModel.FK_Employee_tblRoleMaster1" FromRole="tblRoleMaster" ToRole="tblEmployee" />
+  </EntityType>
+  <EntityType Name="tblStock">
+    <Key>
+      <PropertyRef Name="StockId" />
+    </Key>
+    <Property Name="StockId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ItemId" Type="Int32" />
+    <Property Name="StockQty" Type="Int32" Nullable="false" />
+    <Property Name="InsertedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" />
+    <NavigationProperty Name="tblItem" Relationship="testdbModel.FK_tblStock_tblProduct" FromRole="tblStock" ToRole="tblItem" />
+  </EntityType>
+  <Association Name="FK_Employee_tblcountry">
+    <End Type="testdbModel.tblcountry" Role="tblcountry" Multiplicity="0..1" />
+    <End Type="testdbModel.tblEmployee" Role="tblEmployee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblcountry">
+        <PropertyRef Name="countryid" />
+      </Principal>
+      <Dependent Role="tblEmployee">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_tblRoleMaster1">
+    <End Type="testdbModel.tblRoleMaster" Role="tblRoleMaster" Multiplicity="0..1" />
+    <End Type="testdbModel.tblEmployee" Role="tblEmployee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblRoleMaster">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="tblEmployee">
+        <PropertyRef Name="RoleTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblStock_tblProduct">
+    <End Type="testdbModel.tblItem" Role="tblItem" Multiplicity="0..1" />
+    <End Type="testdbModel.tblStock" Role="tblStock" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblItem">
+        <PropertyRef Name="ItemId" />
+      </Principal>
+      <Dependent Role="tblStock">
+        <PropertyRef Name="ItemId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
